@@ -3,7 +3,7 @@ import { Container, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
 // {"0": 10, "1": 20, "2": 30, "3": 40, "4": 50, "5": 60}
 const App = () => {
-  const [data, setData] = useState([0, 0, 0, 0, 0]);
+  const [data, setData] = useState([0, 0, 0, 0, 0, 0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,6 +11,7 @@ const App = () => {
         const response = await fetch("http://localhost:5000/ratingsCount");
         const jsonData = await response.json();
         const dataArray = Object.values(jsonData); // Convert jsonData to an array
+        console.log("json", jsonData);
 
         console.log("arr", dataArray);
         setData(dataArray);
@@ -44,7 +45,7 @@ const App = () => {
               xAxis={[
                 {
                   id: "barCategories",
-                  data: ["1", "2", "3", "4", "5"],
+                  data: ["1", "2", "3", "4", "5", "No Response"],
                   scaleType: "band",
                 },
               ]}
