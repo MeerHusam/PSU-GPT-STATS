@@ -10,7 +10,6 @@ const App = () => {
       try {
         const response = await fetch("http://localhost:5000/ratingsCount");
         const jsonData = await response.json();
-        console.log("json", jsonData);
         const dataArray = Object.values(jsonData); // Convert jsonData to an array
 
         console.log("arr", dataArray);
