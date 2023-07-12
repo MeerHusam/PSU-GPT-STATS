@@ -12,7 +12,7 @@ conn = sqlite3.connect("llm_data.db")
 cur = conn.cursor()
 
 
-@app.route("averageScore")
+@app.route("/averageScore")
 def average_score():
     rows = cur.execute("SELECT AVG(rating) FROM llm_data").fetchall()
     conn.close()
@@ -21,7 +21,8 @@ def average_score():
 
 @app.route("/numResponses")
 def index():
-    rows = cur.execute("SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
+    rows = cur.execute(
+        "SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
     conn.close()
     return jsonify({"numResponses": len(rows)})
 
