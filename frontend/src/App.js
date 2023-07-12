@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Container, Typography } from "@mui/material";
+import { BarChart } from "@mui/x-charts";
 
-function App() {
+const res = [1, 3, 5, 1, 4, 0];
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <div style={{ display: "flex", justifyContent: "left" }}>
+        <div style={{ position: "relative" }}>
+          <Typography
+            variant="subtitle1"
+            style={{
+              position: "absolute",
+              left: "50px",
+              top: "50%",
+              transform: "rotate(-90deg)",
+              transformOrigin: "center",
+              textAlign: "center",
+            }}
+          >
+            Number of Responses
+          </Typography>
+          <div style={{ marginLeft: "120px" }}>
+            <BarChart
+              xAxis={[
+                {
+                  id: "barCategories",
+                  data: ["0", "1", "2", "3", "4", "5"],
+                  scaleType: "band",
+                },
+              ]}
+              series={[
+                {
+                  data: res,
+                },
+              ]}
+              width={500}
+              height={300}
+            />
+            <Typography
+              variant="subtitle1"
+              align="center"
+              style={{
+                marginTop: "-25px", // Adjust the value to move the label up or down
+              }}
+            >
+              Rating scale 0-5
+            </Typography>
+          </div>
+        </div>
+      </div>
+    </Container>
   );
-}
+};
 
 export default App;
