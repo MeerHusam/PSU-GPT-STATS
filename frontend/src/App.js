@@ -3,7 +3,7 @@ import { Container, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
 // {"0": 10, "1": 20, "2": 30, "3": 40, "4": 50, "5": 60}
 const App = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([0, 0, 0, 0, 0]);
 
   useEffect(() => {
     const fetchData = async () => {
