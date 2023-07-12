@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
-
-const res = [1, 3, 5, 1, 4, 0];
-
+// {"0": 10, "1": 20, "2": 30, "3": 40, "4": 50, "5": 60}
 const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/ratingsCount");
+        const jsonData = await response.json();
+        console.log("json", jsonData);
+        const dataArray = Object.values(jsonData); // Convert jsonData to an array
+
+        console.log("arr", dataArray);
+        setData(dataArray);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <div style={{ display: "flex", justifyContent: "left" }}>
@@ -27,13 +45,13 @@ const App = () => {
               xAxis={[
                 {
                   id: "barCategories",
-                  data: ["0", "1", "2", "3", "4", "5"],
+                  data: ["0", "1", "2", "3", "4"],
                   scaleType: "band",
                 },
               ]}
               series={[
                 {
-                  data: res,
+                  data: data,
                 },
               ]}
               width={500}
@@ -43,7 +61,7 @@ const App = () => {
               variant="subtitle1"
               align="center"
               style={{
-                marginTop: "-25px", // Adjust the value to move the label up or down
+                marginTop: "-25px",
               }}
             >
               Rating scale 0-5
