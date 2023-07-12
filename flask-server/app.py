@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to the SQLite database (or create it)
-conn = sqlite3.connect("llm_data.db")
+conn = sqlite3.connect("ratings.db")
 
 # Create a cursor object
 cur = conn.cursor()
@@ -21,8 +21,7 @@ def average_score():
 
 @app.route("/numResponses")
 def index():
-    rows = cur.execute(
-        "SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
+    rows = cur.execute("SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
     conn.close()
     return jsonify({"numResponses": len(rows)})
 
@@ -36,3 +35,7 @@ def ratings_count():
     # Convert tuple to dictionary
     results_dict = {str(rating): count for rating, count in rows}
     return jsonify(results_dict)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
