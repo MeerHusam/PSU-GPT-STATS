@@ -47,8 +47,8 @@ const Chart = () => {
     >
       <Box
         style={{
-          width: "50%",
-          minHeight: "300px",
+          width: "100%",
+          minHeight: "375px",
           display: "flex",
           flexDirection: "column",
           alignSelf: "flex-start", // Align the component to the left
