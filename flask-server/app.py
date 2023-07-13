@@ -25,11 +25,24 @@ def average_score():
     return jsonify(rows)
 
 
+@app.route("/numEvaluations")
+def num_evaluaitons():
+    conn, cur = get_db_connection()
+    try:
+        rows = cur.execute("SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Database error"}), 500
+    finally:
+        conn.close()
+    return jsonify({"numEvaluations": len(rows)})
+
+
 @app.route("/numResponses")
 def num_responses():
     conn, cur = get_db_connection()
     try:
-        rows = cur.execute("SELECT * FROM llm_data WHERE rating IS NOT NULL").fetchall()
+        rows = cur.execute("SELECT * FROM llm_data").fetchall()
     except Exception as e:
         print(e)
         return jsonify({"error": "Database error"}), 500
