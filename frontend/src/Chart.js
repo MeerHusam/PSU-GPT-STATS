@@ -1,73 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
+import React, { useEffect, useState, useRef } from "react";
+import { Typography, Box } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
-// {"0": 10, "1": 20, "2": 30, "3": 40, "4": 50, "5": 60}
+import { Container } from "@mui/material";
+
 const Chart = () => {
   const [data, setData] = useState([0, 0, 0, 0, 0]);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const chartContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:5000/ratingsCount");
         const jsonData = await response.json();
-        console.log("json", jsonData);
-        const dataArray = Object.values(jsonData); // Convert jsonData to an array
-
-        console.log("arr", dataArray);
+        const dataArray = Object.values(jsonData);
         setData(dataArray);
       } catch (error) {
         console.log("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const updateSize = () => {
+      if (chartContainerRef.current) {
+        setWidth(Math.max(chartContainerRef.current.offsetWidth, 300)); // minimum width: 300
+        setHeight(Math.max(chartContainerRef.current.offsetHeight, 300)); // minimum height: 300
+      }
+    };
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
-    <div style={{ display: "flex", justifyContent: "left" }}>
-      <div style={{ position: "relative" }}>
-        <Typography
-          variant="subtitle1"
-          style={{
-            position: "absolute",
-            left: "50px",
-            top: "50%",
-            transform: "rotate(-90deg)",
-            transformOrigin: "center",
-            textAlign: "center",
-          }}
-        >
-          Number of Responses
-        </Typography>
-        <div style={{ marginLeft: "120px" }}>
+    <Container
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Box
+        style={{
+          width: "50%",
+          minHeight: "300px",
+          display: "flex",
+          flexDirection: "column",
+          alignSelf: "flex-start", // Align the component to the left
+        }}
+        ref={chartContainerRef}
+      >
+        <div style={{ flexGrow: 1 }}>
           <BarChart
             xAxis={[
               {
                 id: "barCategories",
-                data: ["1", "2", "3", "4", "5"],
+                data: ["1", "2", "3", "4", "5", "No Response"],
                 scaleType: "band",
               },
             ]}
             series={[
               {
                 data: data,
+                color: "#013e87",
               },
             ]}
-            width={500}
-            height={300}
+            width={width}
+            height={height}
           />
-          <Typography
-            variant="subtitle1"
-            align="center"
-            style={{
-              marginTop: "-25px",
-            }}
-          >
-            Rating scale 1-5
-          </Typography>
         </div>
-      </div>
-    </div>
+        <Typography
+          variant="subtitle1"
+          align="center"
+          style={{
+            marginTop: "-25px",
+          }}
+        >
+          Rating scale 1-5
+        </Typography>
+      </Box>
+    </Container>
   );
 };
 
